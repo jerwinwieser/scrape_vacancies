@@ -25,10 +25,9 @@ read_jobs <- function(page) {
     as_tibble()
 }
 
-jobs <- seq(c(1:2)) %>%
+jobs <- seq(1,n_pages) %>%
   map_dfr(read_jobs, .id = "page") %>%
-  # filter(str_detect(tolower(value), "data")) %>%
-  # separate(col = value, into = c("title", "city", "salaris"), sep = "\n")
+  filter(str_detect(tolower(value), "data")) %>%
   separate(col = value, into = c("title"), sep = "\n")
 
 write_csv(jobs, "./jobs.csv")
