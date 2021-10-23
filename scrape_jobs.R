@@ -50,11 +50,13 @@ jobs <- seq(1,2) %>%
 
 dtime_finish <- paste("scraping finished: ", Sys.time())
 
-write.table(jobs, "./jobs.txt", append = FALSE, sep = " ", dec = ".",
+output_file <- "~jobs/jobs.txt"
+
+write.table(jobs, output_file, append = FALSE, sep = " ", dec = ".",
             row.names = FALSE, col.names = TRUE)
 
-write.table(dtime_start, "./jobs.txt", append = TRUE, sep = " ", dec = ".",
+write.table(dtime_start, output_file, append = TRUE, sep = " ", dec = ".",
             row.names = FALSE, col.names = FALSE)
 
-write.table(dtime_finish, "./jobs.txt", append = TRUE, sep = " ", dec = ".",
+write.table(dtime_finish, output_file, append = TRUE, sep = " ", dec = ".",
             row.names = FALSE, col.names = FALSE)
