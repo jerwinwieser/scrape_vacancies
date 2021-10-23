@@ -42,7 +42,7 @@ jobs <- job_numbers %>%
          days_ago = if_else(is.na(days_ago), 0L, days_ago),
          days_ago_str = paste(days_ago, "days ago")) %>% 
   arrange(days_ago) %>% 
-  filter(days_ago < 7) %>% 
+  filter(days_ago < 3) %>% 
   distinct(title, days_ago_str)
 
 dtime_finish <- paste("scraping finished: ", Sys.time())
