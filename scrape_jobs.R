@@ -41,7 +41,7 @@ read_jobs <- function(page) {
   return(df_out)
 }
 
-jobs <- seq(1,2) %>%
+jobs <- seq(1,n_pages) %>%
   map_dfr(read_jobs, .id = "page") %>%
   filter(str_detect(tolower(value), "data")) %>%
   separate(col = value, into = c("title"), sep = "\n") %>% 
