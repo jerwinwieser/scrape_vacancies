@@ -8,7 +8,7 @@ dtime_start <- paste("scraping started : ", Sys.time())
 
 scrape_jobs_indeed <- function(job_number) {
   
-  job_number <- 1
+  # job_number <- 1
   
   url <- paste0("https://nl.indeed.com/vacatures?q=data&start=", as.character(job_number))
   print(paste("scraping :", url))
