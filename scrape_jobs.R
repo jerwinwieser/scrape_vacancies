@@ -17,6 +17,7 @@ n_pages <- ceiling(n_jobs / 15)
 
 read_jobs <- function(page) {
   url <- paste0("https://www.randstad.nl/vacatures?pagina=", as.character(page))
+  print(paste0("scraping : ", url))
   url %>%
     read_html() %>%
     html_nodes(xpath = '//*[@class="vacancy-tile"]') %>%
@@ -24,9 +25,10 @@ read_jobs <- function(page) {
     as_tibble()
 }
 
-jobs <- seq(1,n_pages) %>%
+jobs <- seq(c(1:2)) %>%
   map_dfr(read_jobs, .id = "page") %>%
-  mutate(job_number = row_number(), .before = 1) %>%
-  filter(str_detect(tolower(value), "data")) %>%
-  separate(col = value, into = c("title", "city", "salaris"), sep = "\n")
+  # filter(str_detect(tolower(value), "data")) %>%
+  # separate(col = value, into = c("title", "city", "salaris"), sep = "\n")
+  separate(col = value, into = c("title"), sep = "\n")
 
+write_csv(jobs, "./jobs.csv")
