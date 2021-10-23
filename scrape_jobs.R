@@ -53,7 +53,7 @@ dtime_finish <- paste("scraping finished: ", Sys.time())
 output_file <- "~/jobs/jobs.txt"
 
 write.table(jobs, output_file, append = FALSE, sep = " ", dec = ".",
-            row.names = FALSE, col.names = TRUE)
+            row.names = FALSE, col.names = FALSE)
 
 write.table(dtime_start, output_file, append = TRUE, sep = " ", dec = ".",
             row.names = FALSE, col.names = FALSE)
