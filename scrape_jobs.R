@@ -1,5 +1,7 @@
-library(tidyverse)
+library(dplyr)
+library(purrr)
 library(rvest)
+library(tidyr)
 library(stringr)
 
 url <- "https://www.randstad.nl/vacatures?pagina=1"
