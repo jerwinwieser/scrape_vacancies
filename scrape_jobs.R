@@ -30,4 +30,5 @@ jobs <- seq(1,n_pages) %>%
   filter(str_detect(tolower(value), "data")) %>%
   separate(col = value, into = c("title"), sep = "\n")
 
-write_csv(jobs, "./jobs.csv")
+write.table(jobs, "./jobs.txt", append = FALSE, sep = " ", dec = ".",
+            row.names = FALSE, col.names = TRUE)
