@@ -4,6 +4,8 @@ library(rvest)
 library(tidyr)
 library(stringr)
 
+dtime_start <- paste("scraping started : ", Sys.time())
+
 url <- "https://www.randstad.nl/vacatures?pagina=1"
 
 n_jobs <- url %>%
@@ -20,17 +22,39 @@ n_pages <- ceiling(n_jobs / 15)
 read_jobs <- function(page) {
   url <- paste0("https://www.randstad.nl/vacatures?pagina=", as.character(page))
   print(paste0("scraping : ", url))
-  url %>%
-    read_html() %>%
+  html <- url %>%
+    read_html()
+  
+  df_jobs <- html %>% 
     html_nodes(xpath = '//*[@class="vacancy-tile"]') %>%
     html_text2() %>%
     as_tibble()
+  
+  df_links <- html %>% 
+    html_nodes(xpath = '//*[@class="vacancy-tile__titlelink"]') %>% 
+    html_attr('href') %>% 
+    as_tibble() %>% 
+    mutate(link = paste0("https://www.randstad.nl", value), .keep = "none")
+  
+  df_out <- bind_cols(df_jobs, df_links)
+  
+  return(df_out)
 }
 
-jobs <- seq(1,n_pages) %>%
+jobs <- seq(1,2) %>%
   map_dfr(read_jobs, .id = "page") %>%
   filter(str_detect(tolower(value), "data")) %>%
-  separate(col = value, into = c("title"), sep = "\n")
+  separate(col = value, into = c("title"), sep = "\n") %>% 
+  select(-page) %>% 
+  mutate(link = paste0("\n", link))
+
+dtime_finish <- paste("scraping finished: ", Sys.time())
 
 write.table(jobs, "./jobs.txt", append = FALSE, sep = " ", dec = ".",
             row.names = FALSE, col.names = TRUE)
+
+write.table(dtime_start, "./jobs.txt", append = TRUE, sep = " ", dec = ".",
+            row.names = FALSE, col.names = FALSE)
+
+write.table(dtime_finish, "./jobs.txt", append = TRUE, sep = " ", dec = ".",
+            row.names = FALSE, col.names = FALSE)
