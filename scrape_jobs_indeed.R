@@ -22,16 +22,21 @@ scrape_jobs_indeed <- function(job_number) {
     as_tibble() %>% 
     mutate(title = str_replace(value, "nieuw\n", ""), .keep = "none")
   
+  str_link <- "date"
+  
   df_date <- html %>% 
-    html_nodes(xpath = '//*[@class="date"]') %>% 
+    html_nodes(xpath = paste0('//*[@class="', str_link, '"]')) %>% 
     html_text2() %>% 
     as_tibble() %>% 
     rename(date = value)
   
-  html %>% 
-    html_nodes("a") %>% html_attr("href")
-    
-  df_out <- bind_cols(df_jobs, df_date)
+  html_href <- html %>% 
+    html_nodes(".tapItem") %>% 
+    html_attr("href") %>% 
+    as_tibble() %>% 
+    mutate(across(value, ~ paste0("https://nl.indeed.com/", value)))
+  
+  df_out <- bind_cols(df_jobs, df_date, html_href)
   
   return(df_out)
   
