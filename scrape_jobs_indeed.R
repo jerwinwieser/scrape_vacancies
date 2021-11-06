@@ -34,7 +34,7 @@ scrape_jobs_indeed <- function(job_number) {
     html_nodes(".tapItem") %>% 
     html_attr("href") %>% 
     as_tibble() %>% 
-    mutate(across(value, ~ paste0("https://nl.indeed.com/", value)))
+    mutate(across(value, ~ paste0("https://nl.indeed.com", value)))
   
   df_out <- bind_cols(df_jobs, df_date, html_href)
   
